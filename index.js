@@ -4,7 +4,7 @@ const http = require("http");
 var app = express();
 const { addUsers, getUsers, removeUsers, getUsersInRoom, addNotificationtouser, removeNotificationtouser } = require("./users");
 const PORT = process.env.PORT || 5000;
-
+process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
 var server = http.createServer(app);
 var io = socketio(server);
 var multer = require('multer');
@@ -57,7 +57,7 @@ io.on("connection", (socket) => {
         console.log(message);
         if (user) {
             callbackmsg = "User Found";
-            filepath = `<a target="_blank" download="${message.filename.filename}" href='http://localhost:5000/${message.filename.filename}'>Download</a>`;
+            filepath = `<a target="_blank" download="${message.filename.filename}" href='https://virtualchatsocket.herokuapp.com/${message.filename.filename}'>Download</a>`;
             io.to(user.room).emit("messagefile", { user: user.name, file: filepath, text: "Please check attachment:-" });
         }
         callback();
